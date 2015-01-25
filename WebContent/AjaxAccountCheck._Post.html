@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+fieldset,#registerDiv{width:400px;}
+#registerDiv{
+	margin:0 auto;
+}
+label{
+  display:inline-block;
+  width:80px;
+  text-align:right;
+}
+#pic1{
+  display:none;
+}
+</style>
+</head>
+<body>
+ <div id="registerDiv">
+ <fieldset style="width:400px;">
+ <legend>會員註冊</legend>
+ <form name="registerForm" action="First.jsp" method="POST">
+ <div>
+ <label for="UserName">帳號 :</label> <input type="text" name="UserName" id="UserName"><a id="acheck" href="#">檢查</a><span id="span1"><img src="images/ajax-loader.gif" id="pic1"></div></span>
+ <div id=div1></div>
+ <script>
+	var btn=document.getElementById("acheck");
+	btn.addEventListener("click",load,false);
+	var xmlHttp;
+	function load(){
+		var name=document.getElementById("UserName").value;
+		xmlHttp=new XMLHttpRequest();
+		xmlHttp.addEventListener("readystatechange",callback,false);
+		var url="AccountCheck.jsp";
+		xmlHttp.open("post",url,true);//true為非同步
+		xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		xmlHttp.send("name="+name);
+		
+		
+	}
+	
+	function callback(){
+		document.getElementById("div1").innerHTML="";//清空一次
+		if(xmlHttp.readyState==1){
+			document.getElementById("pic1").style.display="inline";
+		}
+		if(xmlHttp.readyState==4){
+			if(xmlHttp.status==200){
+				document.getElementById("pic1").style.display="none";
+				var data=xmlHttp.responseText;
+				var myDiv=document.getElementById("div1");
+				myDiv.innerHTML=data;
+			}else{
+				alert(xmlHttp.status+":"+xmlHttp.statusText);
+			}
+		}
+	}
+	
+	
+	
+
+</script>
+ <div>
+<label for="password">密碼 :</label> <input type="password" name="password" id="password">
+</div>
+<div>
+<label for="email"> 電子郵件 :</label> <input type="text" name="email" id="email">
+</div>
+<div>
+ <input type="submit" value="註冊">
+ </div>
+ </form>
+ </fieldset>
+ </div>
+</body>
+</html>

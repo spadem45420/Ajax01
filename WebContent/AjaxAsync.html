@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="BIG5">
+<title>Insert title here</title>
+<style>
+	#img1{display:none}<!-- 消失的語法 -->
+</style>
+</head>
+<body>
+<input type="button" value="Load" id="buttonload"><img src="images/ajax-loader.gif" id="img1">
+<div id=div1></div>
+<input type="text"><br><!-- 同步測試 -->
+<input type="text"><br><!-- 同步測試 -->
+<input type="text"><br><!-- 同步測試 -->
+<input type="text"><br><!-- 同步測試 -->
+<input type="text"><br><!-- 同步測試 -->
+<script>
+	var btn=document.getElementById("buttonload");
+// 	btn.onclick=load;
+	btn.addEventListener("click",load,false);
+	var xmlHttp;
+	function load(){
+// 		alert("Hello");
+		//步驟一
+		xmlHttp=new XMLHttpRequest();
+		xmlHttp.addEventListener("readystatechange",callback,false)
+		//步驟二
+		xmlHttp.open("get","index.jsp",true);//true為非同步
+		xmlHttp.send();
+		
+		
+	}
+	
+	function callback(){
+ 		console.log(xmlHttp.readyState)
+ 		if(xmlHttp.readyState==1){
+ 			document.getElementById("img1").style.display="inline";//inline為顯示
+ 		}
+		if(xmlHttp.readyState==4){//readyState=4代表通過
+			document.getElementById("img1").style.display="none";//none為消失
+			if(xmlHttp.status==200){//200代表正常
+				//步驟三
+				var data=xmlHttp.responseText;
+				var myDiv=document.getElementById("div1");
+				myDiv.innerHTML="<h2>"+data+"<h2>";
+			}else{
+				alert(xmlHttp.status+":"+xmlHttp.statusText);//顯示伺服錯誤代碼+:+錯誤訊息
+			}
+		}
+	}
+	
+	
+	
+
+</script>
+</body>
+</html>
