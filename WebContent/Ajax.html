@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="BIG5">
+<title>Insert title here</title>
+</head>
+<body>
+<input type="button" value="Load" id="buttonload"><!-- 先創造按鈕 -->
+<div id=div1></div><!-- 按鈕按完後，顯示文字區塊 -->
+<input type="text"><br><!-- 同步測試 -->
+<input type="text"><br><!-- 同步測試 -->
+<input type="text"><br><!-- 同步測試 -->
+<input type="text"><br><!-- 同步測試 -->
+<input type="text"><br><!-- 同步測試 -->
+<script>
+	var btn=document.getElementById("buttonload");//取得buttonload按鈕
+// 	btn.onclick=load;
+	btn.addEventListener("click",load,false);//buttonload按鈕 "的" click事件  "呼叫" load方法
+	
+	function load(){
+// 		alert("Hello");//測試
+// 		console.log("Hello");//測試
+
+		//步驟一
+		var xmlHttp=new XMLHttpRequest();//連線初始化
+		
+		//步驟二
+		xmlHttp.open("get","index.jsp",false);//get or post;url;true(非同步) or false(同步)
+		xmlHttp.send();//傳送資料到伺服器
+		
+		//步驟三
+		var data=xmlHttp.responseText;//取得從伺服器傳回的文字資料
+		var myDiv=document.getElementById("div1");//取得div1文字區塊
+		myDiv.innerHTML="<h2>"+data+"<h2>";//插入從伺服器傳回的文字資料
+	}
+</script>
+</body>
+</html>

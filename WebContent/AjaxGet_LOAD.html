@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="BIG5">
+<title>Insert title here</title>
+<style>
+	#img1{display:none}<!-- 消失的語法 -->
+</style>
+</head>
+<body>
+<input type="button" value="Load" id="buttonload">
+<input type="button" value="Stop" id="buttonStop">
+<div id=div1></div>
+<script>
+	var btn=document.getElementById("buttonload");//load按鈕
+	btn.addEventListener("click",load,false);
+	
+	var btn=document.getElementById("buttonStop");//stop按鈕
+	btn.addEventListener("click",stop,false);
+	
+	var xmlHttp;
+	
+	function stop(){//stop按鈕 呼叫abort
+		xmlHttp.abort();
+	}
+	
+	function load(){
+		xmlHttp=new XMLHttpRequest();
+		xmlHttp.timeout=3000;//逾時3秒
+		
+		xmlHttp.addEventListener("readystatechange",function(){
+			console.log(xmlHttp.readyState)}
+		,false);
+		
+		xmlHttp.addEventListener("loadstart",function(){
+			console.log("loadstart")}
+		,false);
+		
+		xmlHttp.addEventListener("loadend",function(){
+			console.log("loadend")}
+		,false);
+		
+		xmlHttp.addEventListener("timeout",function(){
+			document.getElementById("div1").innerHTML="timeout"}//連線逾時
+		,false);
+		
+		xmlHttp.addEventListener("abort",function(){
+			document.getElementById("div1").innerHTML="abort"}//中斷連線
+		,false);
+		
+		xmlHttp.addEventListener("load",function(){
+			console.log(xmlHttp.readyState);
+			console.log("load");
+			if(xmlHttp.status==200){
+				var data=xmlHttp.responseText;
+				var myDiv=document.getElementById("div1");
+				myDiv.innerHTML="<h2>"+data+"<h2>";
+			}else{
+				alert(xmlHttp.status+":"+xmlHttp.statusText);
+			}
+		},false)
+		var url="Parameter.jsp?name=Tom&age=20";
+		xmlHttp.open("get",url,true);//true為非同步
+		xmlHttp.send();
+		
+		
+	}
+	
+	
+	
+
+</script>
+</body>
+</html>

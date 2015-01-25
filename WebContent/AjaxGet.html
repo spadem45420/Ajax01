@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="BIG5">
+<title>Insert title here</title>
+<style>
+	#img1{display:none}<!-- 消失的語法 -->
+</style>
+</head>
+<body>
+<input type="button" value="Load" id="buttonload">
+<div id=div1></div>
+<script>
+	var btn=document.getElementById("buttonload");
+	btn.addEventListener("click",load,false);
+	var xmlHttp;
+	function load(){
+		xmlHttp=new XMLHttpRequest();
+		xmlHttp.addEventListener("readystatechange",callback,false)
+		var url="Parameter.jsp?name=Tom&age=20";
+		xmlHttp.open("get",url,true);//true為非同步
+		xmlHttp.send();
+		
+		
+	}
+	
+	function callback(){
+		if(xmlHttp.readyState==4){
+			if(xmlHttp.status==200){
+				var data=xmlHttp.responseText;
+				var myDiv=document.getElementById("div1");
+				myDiv.innerHTML="<h2>"+data+"<h2>";
+			}else{
+				alert(xmlHttp.status+":"+xmlHttp.statusText);
+			}
+		}
+	}
+	
+	
+	
+
+</script>
+</body>
+</html>

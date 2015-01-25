@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="BIG5">
+<title>Insert title here</title>
+<style>
+	#img1{display:none}<!-- 消失的語法 -->
+</style>
+</head>
+<body>
+<input type="button" value="Load" id="buttonload">
+<div id=div1></div>
+<script>
+	var btn=document.getElementById("buttonload");
+	btn.addEventListener("click",load,false);
+	var xmlHttp;
+	function load(){
+		xmlHttp=new XMLHttpRequest();
+		xmlHttp.addEventListener("readystatechange",callback,false)
+		var url="GetProducts.jsp";
+		xmlHttp.open("get",url,true);//true為非同步
+		xmlHttp.send();
+		
+		
+	}
+	
+	function callback(){
+		if(xmlHttp.readyState==4){
+			if(xmlHttp.status==200){
+				var data=xmlHttp.responseText;
+// 				alert(data);
+				var Object = JSON.parse(data);
+				var myDiv = document.getElementById("div1");
+				while(myDiv.hasChildNodes()){//如果還有ChildNodes就刪掉
+					myDiv.removeChild(myDiv.firstChild);
+				}
+				for(var i=0,max=Object.length;i<max;i++){
+					var UnitPrice =Object[i].UnitPrice;
+					var ProductName =Object[i].ProductName;
+					
+					var txt=document.createTextNode(UnitPrice);
+					var txt2=document.createTextNode(ProductName);
+					
+					var eleH2=document.createElement("h2");
+					var p=document.createElement("p");
+					
+					eleH2.appendChild(txt);
+					p.appendChild(txt2);
+					
+					myDiv.appendChild(eleH2);
+					myDiv.appendChild(p);
+				}
+				
+			}else{
+				alert(xmlHttp.status+":"+xmlHttp.statusText);
+			}
+		}
+	}
+	
+	
+	
+
+</script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="BIG5">
+<title>Insert title here</title>
+<style>
+</style>
+</head>
+<body>
+<input type="button" value="Load" id="buttonload">
+<div id=div1></div>
+<script>
+	var btn=document.getElementById("buttonload");
+	btn.addEventListener("click",load,false);
+	var xmlHttp;
+	function load(){
+		xmlHttp=new XMLHttpRequest();
+		xmlHttp.addEventListener("readystatechange",callback,false)
+		var url="datas/data.xml";
+		xmlHttp.open("get",url,true);//true為非同步
+		xmlHttp.send();
+		
+	}
+	
+	function callback(){
+		if(xmlHttp.readyState==4){
+			if(xmlHttp.status==200){
+				var doc=xmlHttp.responseXML;//取得要從伺服器傳回XML資料
+				var myDiv = document.getElementById("div1");
+				while(myDiv.hasChildNodes()){//如果還有ChildNodes就刪掉
+					myDiv.removeChild(myDiv.firstChild);
+				}
+// 				var titles=doc.getElementsByTagName("stitle");
+// 				for(var i=0,max=titles.length;i<max;i++){
+//					console.log(titles[i].firstChild.nodeValue);//測試
+// 					var title =titles[i].firstChild.nodeValue;
+
+// 					var txt=document.createTextNode(title);//文字節點
+// 					var eleH2=document.createElement("h2");//元素節點
+
+// 					eleH2.appendChild(txt);//文字加到元素中
+// 					myDiv.appendChild(eleH2);//加到myDiv中
+// 				}
+
+				var row =doc.getElementsByTagName("row");
+// 				console.log(row[4].nodeName);
+// 				console.log(row[4].nodeType);
+// 				console.log(row[4].nodeValue);
+				
+// 				console.log(row[4].firstChild.nodeName);
+// 				console.log(row[4].firstChild.nodeType);
+// 				console.log(row[4].firstChild.nodeValue);
+				
+// 				console.log(row[4].childNodes[1].nodeName);
+// 				console.log(row[4].childNodes[1].nodeType);
+// 				console.log(row[4].childNodes[1].nodeValue);
+				
+// 				console.log(row[4].childNodes[7].firstChild.nodeName);
+// 				console.log(row[4].childNodes[7].firstChild.nodeType);
+// 				console.log(row[4].childNodes[7].firstChild.nodeValue);
+
+// 				console.log(row[4].getElementsByTagName("stitle")[0].firstChild.nodeValue);
+// 				console.log(row[4].getElementsByTagName("xbody")[0].firstChild.nodeValue);
+				
+				for(var i=0,max=row.length;i<max;i++){
+					var stitle =row[i].getElementsByTagName("stitle")[0].firstChild.nodeValue;
+					var xbody =row[i].getElementsByTagName("xbody")[0].firstChild.nodeValue;
+					
+					var txt=document.createTextNode(stitle);
+					var txt2=document.createTextNode(xbody);
+					
+					var eleH2=document.createElement("h2");
+					var p=document.createElement("p");
+					
+					eleH2.appendChild(txt);
+					p.appendChild(txt2);
+					
+					myDiv.appendChild(eleH2);
+					myDiv.appendChild(p);
+				}
+				
+			}else{
+				alert(xmlHttp.status+":"+xmlHttp.statusText);
+			}
+		}
+	}
+	
+	
+	
+
+</script>
+</body>
+</html>

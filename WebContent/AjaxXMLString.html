@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="BIG5">
+<title>Insert title here</title>
+<style>
+	
+	.item{
+		width:200px;
+		height:150px;
+		margin:10px;
+		box-shadow:3px 3px 5px silver;
+		opacity:0.5;
+	}
+	
+	.item:hover{
+		width:200px;
+		height:150px;
+		margin:10px;
+		box-shadow:3px 3px 5px silver;
+		opacity:1;
+	}
+</style>
+</head>
+<body>
+<input type="button" value="Load" id="buttonload">
+<div id=div1></div>
+<script>
+	var btn=document.getElementById("buttonload");
+	btn.addEventListener("click",load,false);
+	var xmlHttp;
+	function load(){
+		xmlHttp=new XMLHttpRequest();
+		xmlHttp.addEventListener("readystatechange",callback,false)
+		var url="datas/data.xml";
+		xmlHttp.open("get",url,true);//true為非同步
+		xmlHttp.send();
+		
+		
+	}
+	
+	function callback(){
+		if(xmlHttp.readyState==4){
+			if(xmlHttp.status==200){
+				var doc=xmlHttp.responseXML;
+				var myDiv = document.getElementById("div1");
+				
+				while(myDiv.hasChildNodes()){
+					myDiv.removeChild(myDiv.firstChild);
+				}
+			
+				var row =doc.getElementsByTagName("row");
+			
+				for(var i=0,max=row.length;i<max;i++){
+					
+					var file=row[i].getElementsByTagName("file")[0].firstChild.nodeValue;
+					
+					var parser = new DOMParser();
+					var doc=parser.parseFromString(file,"text/xml");//載入XML字串，變成DOM
+					
+					var dsc=doc.firstChild.getElementsByTagName("img")[0].getAttribute("description");
+					var img=doc.firstChild.getElementsByTagName("img")[0].firstChild.nodeValue;
+										
+					var eleImg=document.createElement("img");
+					
+					eleImg.setAttribute("src",img);
+					eleImg.setAttribute("title",dsc);
+					eleImg.className="item";
+					
+					
+					myDiv.appendChild(eleImg);
+				}
+				
+			}else{
+				alert(xmlHttp.status+":"+xmlHttp.statusText);
+			}
+		}
+	}
+	
+	
+	
+
+</script>
+</body>
+</html>
